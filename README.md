@@ -34,19 +34,20 @@ A full-stack web application that allows administrators to create and manage onl
 
 ## 🗂️ Project Structure
 
-OnlineExamEvaluator/
+```OnlineExamEvaluator/
 ├── src/
-│ ├── main/
-│ │ ├── java/
-│ │ │ └── com.onlineexam/ ← Core logic & controllers
-│ │ └── webapp/
-│ │ ├── WEB-INF/
-│ │ │ └── jsp/ ← JSP views
-│ │ └── static/ ← CSS, JS
+│ └── main/
+│ ├── java/
+│ │ └── com/
+│ │ └── onlineexam/ # Core logic & controllers
+│ └── webapp/
+│ ├── WEB-INF/
+│ │ └── jsp/ # JSP views
+│ └── static/ # CSS, JS files
 ├── resources/
-│ └── application.properties
-├── pom.xml
-└── README.md
+│ └── application.properties # DB config, port setup, etc.
+├── pom.xml # Maven dependencies
+└── README.md # Project documentation```
 ==================================================================================================================================================================================================
 ##  How to Run
 
@@ -67,3 +68,12 @@ Launch via SpringBootApplication class or deploy on a servlet container (Tomcat)
 Access the app:
 
 http://localhost:8080/
+
+==========================================================================================================================================================================================================
+
+@ Author
+Raviteja Jonnalagadda
+Full Stack Developer | Java | Spring Boot | Oracle
+Email Id :- raviteja032766@gmail.com
+Phone Number :- +91 9346858141
+
