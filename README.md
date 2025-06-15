@@ -73,7 +73,7 @@ http://localhost:8080/
 
 @ Author
 Raviteja Jonnalagadda
-Full Stack Developer | Java | Spring Boot | Oracle
+Java Full Stack Developer 
 Email Id :- raviteja032766@gmail.com
 Phone Number :- +91 9346858141
 
