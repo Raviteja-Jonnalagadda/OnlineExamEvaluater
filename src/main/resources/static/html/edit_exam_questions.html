@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Edit Exam Questions</title>
+	<link rel="icon" href="../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+	<link rel="stylesheet" href="../css/edit_exam_questions.css" />
+</head>
+
+<body>
+
+	<h2>Edit Exam</h2>
+
+	<div id="examForm">
+		<div class="form-group"><label>Exam ID:</label><input type="text" id="examId" readonly></div>
+		<div class="form-group"><label>Exam Name:</label><input type="text" id="examName" readonly></div>
+		<div class="form-group"><label>No of Questions:</label><input type="text" id="noOfQuestions" readonly></div>
+		<div class="form-group"><label>Duration (min):</label><input type="number" id="duration"></div>
+		<div class="form-group"><label>Total Marks:</label><input type="number" id="totalMarks"></div>
+		<div class="form-group"><label>Pass Marks:</label><input type="number" id="passMarks"></div>
+	</div>
+
+	<h3>Question List</h3>
+	<table id="questionTable" class="editable-table">
+		<thead>
+			<tr>
+				<th>Select</th>
+				<th>Question ID</th>
+				<th>Question Text</th>
+				<th>Options</th>
+				<th>Correct Option</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+
+	<h3>Edit Selected Question</h3>
+	<div id="questionForm">
+		<input type="hidden" id="editQuestionId">
+		<div class="form-group"><label>Question Text:</label><input type="text" id="questionText"></div>
+		<div class="form-group"><label>Options (comma separated):</label><input type="text" id="options"></div>
+		<div class="form-group"><label>Correct Option:</label><input type="text" id="correctOption"></div>
+		<button id="updateQuestionBtn">Save Changes to Table</button>
+	</div>
+
+	<br><br>
+	<button id="saveExamBtn">Save Entire Exam</button>
+
+	<script src="../js/jquery-3.7.1.min.js"></script>
+	<script>
+		let examData = null;
+
+		$(document).ready(function () {
+			const selectedExamId = localStorage.getItem("selectedExamId");
+			//alert("selectedExamId  -->  [" + selectedExamId + "]");
+			if (!selectedExamId) {
+				alert("No Exam selected!");
+				window.location.href = "exam_selection.html";
+				return;
+			}
+
+			// Load exam data from server
+			$.ajax({
+				url: `/OnlineExamEvaluater/getExamDetails?examId=${selectedExamId}`,
+				method: "GET",
+				success: function (res) {
+					examData = res;
+
+					$('#examId').val(res.examId);
+					$('#examName').val(res.examName);
+					$('#noOfQuestions').val(res.noOfQuestions);
+					$('#duration').val(res.duration);
+					$('#totalMarks').val(res.totalMarks);
+					$('#passMarks').val(res.passMarks);
+
+					loadQuestionTable(res.questions);
+				},
+				error: function () {
+					alert("Failed to load exam data");
+				}
+			});
+
+			function loadQuestionTable(questions) {
+				$('#questionTable tbody').empty();
+
+				questions.forEach((q, index) => {
+					console.log("Question " + (index + 1) + ":", q);
+
+					const opts = [q.option1, q.option2, q.option3, q.option4].filter(Boolean);
+					const optDisplay = opts
+						.map(opt => `<span class="${opt.trim() === q.correctOption ? 'correct' : ''}">${opt.trim()}</span>`)
+						.join('<br>');
+
+					$('#questionTable tbody').append(`
+            <tr>
+              <td class="radio-cell"><input type="radio" name="selectedQ" value="${q.questionId}"></td>
+              <td>${q.questionId}</td>
+              <td>${q.questionText}</td>
+              <td>${optDisplay}</td>
+              <td class="correct">${q.correctOption}</td>
+            </tr>
+          `);
+				});
+			}
+
+			$('#questionTable').on('change', 'input[name="selectedQ"]', function () {
+				const qId = $(this).val();
+				const q = examData.questions.find(q => q.questionId == qId);
+
+				if (!q) {
+					alert("Selected question not found.");
+					return;
+				}
+
+				$('#editQuestionId').val(q.questionId);
+				$('#questionText').val(q.questionText);
+				const opts = [q.option1, q.option2, q.option3, q.option4].filter(Boolean);
+				$('#options').val(opts.join(', '));
+				$('#correctOption').val(q.correctOption);
+			});
+
+			$('#updateQuestionBtn').click(function () {
+				const qId = $('#editQuestionId').val();
+				const qText = $('#questionText').val().trim();
+				const opts = $('#options').val().split(',').map(opt => opt.trim());
+				const correct = $('#correctOption').val().trim();
+
+				if (!qId || !qText || opts.length < 2 || !correct) {
+					alert("Please fill all fields properly.");
+					return;
+				}
+
+				const qIndex = examData.questions.findIndex(q => q.questionId == qId);
+				if (qIndex !== -1) {
+					examData.questions[qIndex].questionText = qText;
+					examData.questions[qIndex].correctOption = correct;
+					examData.questions[qIndex].option1 = opts[0] || "";
+					examData.questions[qIndex].option2 = opts[1] || "";
+					examData.questions[qIndex].option3 = opts[2] || "";
+					examData.questions[qIndex].option4 = opts[3] || "";
+					loadQuestionTable(examData.questions);
+				}
+
+				$('input[name="selectedQ"]').prop('checked', false);
+				$('#editQuestionId, #questionText, #options, #correctOption').val('');
+			});
+
+			$('#saveExamBtn').click(function () {
+			    // Update exam fields from inputs
+			    examData.examId = $('#examId').val();
+			    examData.examName = $('#examName').val();
+			    examData.noOfQuestions = $('#noOfQuestions').val();
+
+			    // Safely handle numeric fields
+			    const durationVal = $('#duration').val().trim();
+			    examData.timeDuration = durationVal === "" ? 0 : parseInt(durationVal);
+
+			    const totalMarksVal = $('#totalMarks').val().trim();
+			    examData.totalMarks = totalMarksVal === "" ? 0 : parseInt(totalMarksVal);
+
+			    const passMarksVal = $('#passMarks').val().trim();
+			    examData.passMarks = passMarksVal === "" ? 0 : parseInt(passMarksVal);
+
+			    console.log("Final exam data to be sent: ", examData);
+
+			    $.ajax({
+			        type: "POST",
+			        url: "/OnlineExamEvaluater/updateExam",
+			        data: JSON.stringify(examData),
+			        contentType: "application/json",
+			        success: function (res) {
+			            alert("Exam updated successfully!");
+						localStorage.removeItem("selectedExamId");
+						window.location.href = "admin_dashboard.html";
+			        },
+			        error: function () {
+			            alert("Failed to update exam!");
+			        }
+			    });
+			});
+
+
+		});
+	</script>
+</body>
+
+</html>

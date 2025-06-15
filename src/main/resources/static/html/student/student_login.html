@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Login</title>
+  <link rel="icon" href="../../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+  <link rel="stylesheet" href="../../css/student/student_login.css" />
+</head>
+<body>
+  <div class="login-container">
+    <h2>Student Login</h2>
+    <form id="studentLoginForm">
+      <input type="text" id="username" name="username" placeholder="Username" required />
+      <input type="password" id="password" name="password" placeholder="Password" required />
+      <div class="captcha-section">
+        <span id="captchaQuestion"></span>
+        <input type="text" id="captchaAnswer" placeholder="Answer" required />
+      </div>
+      <div class="buttons">
+        <button type="submit">Login</button>
+        <button type="reset">Cancel</button>
+      </div>
+      <div id="error" class="error-message"></div>
+    </form>
+  </div>
+  <script src="../../js/jquery-3.7.1.min.js"></script>
+  <script src="../../js/student/student_login.js"></script>
+</body>
+</html>

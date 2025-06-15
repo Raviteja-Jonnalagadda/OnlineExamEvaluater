@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Published Successfully!</title>
+	<link rel="icon" href="../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #6c63ff;
+            --secondary: #4fd1c5;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+            --dark: #2d3748;
+            --light: #f7fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        
+        .success-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .success-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+        
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+        }
+        
+        .success-icon svg {
+            width: 60px;
+            height: 60px;
+            fill: white;
+        }
+        
+        h1 {
+            color: var(--dark);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        p {
+            color: #4a5568;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(108, 99, 255, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .btn:hover::after {
+            opacity: 1;
+        }
+        
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            padding: 20px;
+            background: rgba(108, 99, 255, 0.1);
+            border-radius: 10px;
+            min-width: 150px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.2);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .success-container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 22rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+        }
+        
+        /* Animation classes */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container animate__animated animate__fadeIn">
+        <div class="success-icon float">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+        </div>
+        
+        <h1 class="animate__animated animate__fadeInUp">Exam Published Successfully!</h1>
+        <p class="animate__animated animate__fadeInUp animate__delay-1s">Your exam is now live and available for students. They can attempt the exam Now</p>
+        
+        <div class="stats animate__animated animate__fadeInUp animate__delay-2s">
+			<div class="stat-item">
+			    <div class="stat-value" id="Exam-Id">0</div>
+			    <div class="stat-label">Exam ID</div>
+			</div>
+            <div class="stat-item">
+                <div class="stat-value" id="question-count">0</div>
+                <div class="stat-label">Questions</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="duration">0</div>
+                <div class="stat-label">Minutes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-marks">0</div>
+                <div class="stat-label">Total Marks</div>
+            </div>
+        </div> 
+        
+        <div class="animate__animated animate__fadeInUp animate__delay-3s">
+            <a href="admin_dashboard.html" class="btn pulse">
+                <span>Go to Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Create confetti
+            createConfetti();
+            
+            // Animate stats counting up
+            animateStats();
+            
+            // Add some floating animations to elements
+            addFloatingAnimations();
+        });
+        
+        function createConfetti() {
+            const colors = ['#6c63ff', '#4fd1c5', '#48bb78', '#ed8936', '#f56565'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = -10 + 'px';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                document.body.appendChild(confetti);
+                
+                // Animate each confetti piece
+                gsap.to(confetti, {
+                    y: window.innerHeight + 10,
+                    x: '+=random(-100,100)',
+                    rotation: 'random(0,360)',
+                    opacity: 1,
+                    duration: Math.random() * 3 + 2,
+                    delay: Math.random() * 3,
+                    ease: 'power1.out',
+                    onComplete: function() {
+                        confetti.remove();
+                        if (i === 99) {
+                            // When all confetti is done, create more
+                            setTimeout(createConfetti, 1000);
+                        }
+                    }
+                });
+            }
+        }
+        
+        function animateStats() {
+            // These values would normally come from your exam data
+            // For demo purposes, we're using random values
+			
+			const examData = JSON.parse(localStorage.getItem("finalExamData"));
+            const questionCount = examData.noOfQuestions;
+            const duration = examData.duration;
+            const totalMarks = examData.totalMarks;
+			const examid = examData.examId;
+			localStorage.removeItem("finalExamData");
+            // Animate counting up
+            gsap.to($("#question-count"), {
+                innerText: questionCount,
+                duration: 2,
+                snap: { innerText: 1 },
+                ease: "power2.out"
+            });
+			gsap.to($("Exam-Id"), {
+			                innerText: questionCount,
+			                duration: 2,
+			                snap: { innerText: 1 },
+			                ease: "power2.out"
+			            });
+            
+            gsap.to($("#duration"), {
+                innerText: duration,
+                duration: 2,
+                snap: { innerText: 1 },
+                ease: "power2.out",
+                delay: 0.3
+            });
+            
+            gsap.to($("#total-marks"), {
+                innerText: totalMarks,
+                duration: 2,
+                snap: { innerText: 1 },
+                ease: "power2.out",
+                delay: 0.6
+            });
+        }
+        
+        function addFloatingAnimations() {
+            // Add floating animation to stat items with different delays
+            $(".stat-item").each(function(index) {
+                gsap.to($(this), {
+                    y: -10,
+                    duration: 2,
+                    yoyo: true,
+                    repeat: -1,
+                    ease: "sine.inOut",
+                    delay: index * 0.2
+                });
+            });
+        }
+    </script>
+</body>
+</html>

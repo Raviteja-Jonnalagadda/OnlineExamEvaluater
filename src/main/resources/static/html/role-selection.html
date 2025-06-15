@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Exam Evaluater</title>
+	<link rel="icon" href="../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+    <link rel="stylesheet" href="../css/role_style.css">
+</head>
+<body>
+    <div class="role-selection-container">
+        <h2>Select Your Role</h2>
+        <form action="/OnlineExamEvaluater/role-handler" method="post">
+            <div class="role-option">
+                <input type="radio" id="admin" name="role" value="admin" required>
+                <label for="admin" class="role-label">
+                    <img src="../images/admin_login.jpg" alt="Admin Icon" class="role-icon"> Admin
+                </label>
+            </div>
+            <div class="role-option">
+                <input type="radio" id="student" name="role" value="student">
+                <label for="student" class="role-label">
+                    <img src="../images/student_login.jpg" alt="Student Icon" class="role-icon"> Student
+                </label>
+            </div>
+            <button type="submit" class="submit-btn">Proceed</button>
+        </form>
+    </div>
+</body>
+</html>

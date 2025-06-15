@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exam Completed</title>
+	<link rel="icon" href="../../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+    <style>
+        body {
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .result-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .result-container h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .result-container p {
+            font-size: 20px;
+            color: #34495e;
+            margin: 15px 0;
+        }
+
+        .result-container span {
+            font-weight: bold;
+            color: #2980b9;
+        }
+
+        .result-container span#status {
+            font-size: 22px;
+            color: #27ae60;
+        }
+
+        .result-container span#status.failed {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="result-container">
+        <h2>🎉 Exam Submitted Successfully!</h2>
+        <p>Your Score: <strong><span id="score"></span></strong></p>
+        <p>Status: <strong><span id="status"></span></strong></p>
+    </div>
+
+    <script>
+        const obtained = localStorage.getItem("lastExamScore");
+        const total = localStorage.getItem("lastExamTotal");
+        const passed = localStorage.getItem("lastExamResult") === "Y";
+
+        document.getElementById("score").textContent = `${obtained} / ${total}`;
+        const statusElement = document.getElementById("status");
+        statusElement.textContent = passed ? "Passed ✅" : "Failed ❌";
+        if (!passed) {
+            statusElement.classList.add("failed");
+        }
+    </script>
+</body>
+</html>
