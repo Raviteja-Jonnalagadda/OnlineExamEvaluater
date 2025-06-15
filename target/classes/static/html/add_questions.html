@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Questions</title>
+  <link rel="icon" href="../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+  
+  <link rel="stylesheet" href="../css/add_questions.css">
+  <link rel="stylesheet" href="../css/jquery-ui.min.css">
+  <link rel="stylesheet" href="../css/ui.jqgrid.css">
+
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script src="../js/grid.locale-en.js"></script>
+  <script src="../js/jquery.jqgrid.min.js"></script>
+  <script src="../js/add_questions.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Exam Details</h2>
+    <div class="readonly-section">
+      <p><strong>Exam ID:</strong> <span id="examIdDisplay"></span></p>
+      <p><strong>Exam Name:</strong> <span id="examNameDisplay"></span></p>
+      <p><strong>No of Questions:</strong> <span id="noOfQuestionsDisplay"></span></p>
+      <p><strong>Time Duration:</strong> <span id="durationDisplay"></span></p>
+      <p><strong>Total Marks:</strong> <span id="totalMarksDisplay"></span></p>
+      <p><strong>Pass Marks:</strong> <span id="passMarksDisplay"></span></p>
+    </div>
+
+    <button id="addQuestionBtn">Add Question</button>
+
+    <div id="questionSection" style="display: none;">
+      <h3>Enter Question</h3>
+      <label>Question ID:</label>
+      <input type="text" id="questionId"><br>
+      <label>Question:</label>
+      <textarea id="questionText" rows="3" cols="50" placeholder="Enter your question here..."></textarea><br><br>
+
+      <button id="addOptionBtn">Add Options</button>
+	  <div id="optionInputs" style="display: none;">
+	    <p>Enter 4 options and select the correct one:</p>
+	    <div>
+	      <input type="text" class="optionInput" id="opt0" placeholder="Option 1" style="width: 300px;">
+	      <input type="radio" name="correctOption" value="0">
+	    </div>
+	    <div>
+	      <input type="text" class="optionInput" id="opt1" placeholder="Option 2" style="width: 300px;">
+	      <input type="radio" name="correctOption" value="1">
+	    </div>
+	    <div>
+	      <input type="text" class="optionInput" id="opt2" placeholder="Option 3" style="width: 300px;">
+	      <input type="radio" name="correctOption" value="2">
+	    </div>
+	    <div>
+	      <input type="text" class="optionInput" id="opt3" placeholder="Option 4" style="width: 300px;">
+	      <input type="radio" name="correctOption" value="3">
+	    </div>
+	    <br>
+	    <button id="addToQueueBtn">Add Question to Queue</button>
+	  </div>
+
+    </div>
+
+    <hr>
+    <h3>Questions Queue</h3>
+    <table id="questionGrid"></table>
+    <div id="pager"></div>
+
+    <br>
+    <button id="finalSubmitBtn">Final Submit</button>
+  </div>
+</body>
+</html>

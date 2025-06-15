@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome - Online Exam Portal</title>
+  <link rel="icon" href="../../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.5);
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      animation: fadeInUp 1.2s ease-out;
+      padding: 40px;
+      border-radius: 20px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      animation: slideInDown 1s ease;
+    }
+
+    .student-id {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      color: #ffeaa7;
+      animation: fadeIn 2s ease;
+    }
+
+    .quote {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.5;
+      font-style: italic;
+      animation: fadeIn 2s ease;
+    }
+
+    .home-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 12px 25px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid #fff;
+      color: #fff;
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .home-btn:hover {
+      background: #fff;
+      color: #2c3e50;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideInDown {
+      from {
+        transform: translateY(-100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+  <script src="../../js/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+  <div class="overlay"></div>
+  <!--<div class="home-btn" onclick="goHome()">← Home</div> -->
+  <div class="content">
+    <h1>Welcome Back!</h1>
+    <div class="student-id">Student ID: <span id="studentIdDisplay">Loading...</span></div>
+    <div class="quote">
+      <h2>“Dont Just Study Learn“</h2>  — Raviteja .J
+    </div>
+  </div>
+
+  <script>
+    function goHome() {
+      // Change this to your main homepage route if needed
+      window.top.location.href = 'homepage.html';
+    }
+
+    $(document).ready(function () {
+      const studentId = localStorage.getItem('studentId') || 'Unknown';
+      $('#studentIdDisplay').text(studentId);
+    });
+  </script>
+</body>
+</html>

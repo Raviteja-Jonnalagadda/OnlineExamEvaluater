@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Dashboard</title>
+  <link rel="icon" href="../../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+  <link rel="stylesheet" href="../../css/student/student_dashboard.css" />
+  <script src="../../js/jquery-3.7.1.min.js"></script>
+  <script src="../../js/jquery-ui.min.js"></script>
+  <style>
+    #homeButton {
+      margin: 10px 0 10px 20px;
+      display: inline-block;
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    #homeButton:hover {
+      background-color: #2980b9;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">Welcome, <span id="studentName">Student</span></div>
+    <div class="header-right"><span id="datetime"></span><div style="border: 2px solid red; border-radius: 5px;" id="log_out"> Log Out  </div></div>
+  </header>
+
+  <main>
+    <div class="card-container" id="cardSlider">
+		<div class="dashboard-card" id="homeButton">🏠 Home</div>
+		<div class="dashboard-card" data-page="attempt_exam.html">📝 Attempt Exam</div>
+		<div class="dashboard-card" data-page="my_results.html">📊 My Results</div>
+		<div class="dashboard-card" data-page="my_profile.html">👤 My Profile</div>
+		<div class="dashboard-card" data-page="contact_admin.html">📩 Contact Administrator</div>
+
+    </div>
+
+    <iframe id="contentFrame" src="homepage.html" frameborder="0"></iframe>
+  </main>
+
+  <footer>
+    <a href="#">Terms & Conditions</a> | 
+    <a href="#">Privacy Policy</a>
+  </footer>
+
+  <script src="../../js/student/student_dashboard.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#homeButton').click(function () {
+        $('#contentFrame').attr('src', 'homepage.html');
+      });
+
+      const studentName = localStorage.getItem('studentName') || 'Student';
+      $('#studentName').text(studentName);
+	  
+	  $("#log_out").click(function(){
+		alert("Thank You ");
+		window.location.href = "../role-selection.html";
+	  })
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact Administrator</title>
+  <link rel="icon" href="../../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      margin-bottom: 15px;
+      font-weight: 700;
+      color: #2c3e50;
+    }
+
+    .contact-info {
+      margin-bottom: 30px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #555;
+    }
+
+    .contact-info strong {
+      color: #34495e;
+    }
+
+    .buttons {
+      margin-bottom: 30px;
+    }
+
+    button {
+      background: #2980b9;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      margin: 0 15px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 8px rgba(41, 128, 185, 0.4);
+    }
+
+    button:hover {
+      background: #1f618d;
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(31, 97, 141, 0.6);
+    }
+
+    .feedback-area {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .feedback-area textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px 15px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: 1.8px solid #ddd;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+      font-family: inherit;
+    }
+
+    .feedback-area textarea:focus {
+      border-color: #2980b9;
+      outline: none;
+    }
+
+    .feedback-area button.send-btn {
+      margin-top: 10px;
+      background: #27ae60;
+      box-shadow: 0 4px 8px rgba(39, 174, 96, 0.4);
+    }
+
+    .feedback-area button.send-btn:hover {
+      background: #1e8449;
+      box-shadow: 0 6px 12px rgba(30, 132, 73, 0.6);
+    }
+
+    .message {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #27ae60;
+      display: none;
+    }
+
+    .error {
+      color: #c0392b;
+    }
+  </style>
+  <script src="../../js/jquery-3.7.1.min.js"></script>
+	</head>
+<body>
+  <div class="container">
+    <h1>Contact Administrator</h1>
+    <div class="contact-info">
+      <p><strong>Name:</strong> Online Exam Admin</p>
+      <p><strong>Address:</strong> 123 Education Lane, Knowledge City, 45678</p>
+      <p><strong>Contact Number:</strong> +91 98765 43210</p>
+      <p><strong>Email ID:</strong> admin@onlineexamevaluator.com</p>
+    </div>
+
+    <div class="buttons">
+      <button id="feedbackBtn" data-type="Feedback">Send Feedback</button>
+      <button id="reportBtn" data-type="Report Issue">Report an Issue</button>
+    </div>
+
+    <div class="feedback-area">
+      <textarea id="messageBox" placeholder="Write your message here..."></textarea>
+      <button class="send-btn">Send</button>
+      <div class="message"></div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      let messageType = '';
+
+      // Show textarea and set message type on button click
+      $('#feedbackBtn, #reportBtn').on('click', function () {
+        messageType = $(this).data('type');
+        $('.feedback-area').fadeIn(300);
+        $('#messageBox').val('').focus();
+        $('.message').hide().text('');
+      });
+
+      // Send button handler
+      $('.send-btn').on('click', function () {
+        const message = $('#messageBox').val().trim();
+        const studentId = localStorage.getItem('studentId');
+
+        if (!studentId) {
+          alert('Student ID not found. Please login again.');
+          return;
+        }
+
+        if (!message) {
+          $('.message').show().addClass('error').text('Please enter a message.');
+          return;
+        }
+
+        // Build mailto URL
+        const adminEmail = 'raviteja032766@gmail.com';  
+        const subject = encodeURIComponent(`${messageType} from Student ID: ${studentId}`);
+        const body = encodeURIComponent(`Student ID: ${studentId}\n\nMessage Type: ${messageType}\n\nMessage:\n${message}`);
+
+        const mailtoLink = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
+
+        // Open default mail client with mailto link
+		const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${adminEmail}&su=${subject}&body=${body}`;
+		window.open(gmailLink, '_blank');
+        // Clear message box and hide error
+        $('#messageBox').val('');
+        $('.message').removeClass('error').hide();
+      });
+    });
+  </script>
+</body>
+</html>

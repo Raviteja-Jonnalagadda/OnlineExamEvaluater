@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirm Exam Deletion</title>
+  <link rel="icon" href="../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+  <link rel="stylesheet" href="../css/edit_exam.css" />
+  <style>
+    .readonly {
+      background-color: #f2f2f2;
+      pointer-events: none;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Confirm Exam Deletion</h2>
+
+    <div id="examInfo"></div>
+    <h3>Questions & Options</h3>
+    <table id="questionsTable">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th>Options</th>
+          <th>Correct Option</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filled dynamically -->
+      </tbody>
+    </table>
+
+    <button id="deleteBtn">Confirm Delete</button>
+  </div>
+
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      const examId = localStorage.getItem("selectedExamId");
+
+      if (!examId) {
+        alert("No exam selected.");
+        window.location.href = "delete_exam.html";
+        return;
+      }
+
+      // Get exam details and questions
+      $.ajax({
+        url: "/OnlineExamEvaluater/getExamDetailsForDelete?examId=" + examId,
+        method: "GET",
+        success: function (res) {
+          if (!res || !res.exam) {
+            alert("Failed to load exam details.");
+            return;
+          }
+
+          const exam = res.exam;
+
+          $('#examInfo').html(`
+            <p><strong>Exam ID:</strong> ${exam.examId}</p>
+            <p><strong>Exam Name:</strong> ${exam.examName}</p>
+            <p><strong>Number of Questions:</strong> ${exam.totalQuestions}</p>
+            <p><strong>Time Duration:</strong> ${exam.duration} minutes</p>
+            <p><strong>Total Marks:</strong> ${exam.totalMarks}</p>
+            <p><strong>Pass Mark:</strong> ${exam.passMark}</p>
+            <p><strong>Created By (Maker ID):</strong> ${exam.makerId}</p>
+          `);
+
+          const tbody = $("#questionsTable tbody");
+          res.questions.forEach(q => {
+            tbody.append(`
+              <tr>
+                <td>${q.question}</td>
+                <td>${q.options}</td>
+                <td>${q.correctOption}</td>
+              </tr>
+            `);
+          });
+        },
+        error: function () {
+          alert("Error loading exam details.");
+        }
+      });
+
+      // Handle deletion
+      $('#deleteBtn').click(function () {
+        if (!confirm("Are you sure you want to delete this exam and all its questions?")) return;
+
+        $.ajax({
+          url: "/OnlineExamEvaluater/deleteExam?examId=" + examId,
+          method: "DELETE",
+          success: function (res) {
+            alert("Exam and its questions deleted successfully.");
+			window.location.href = "admin_dashboard.html";
+          },
+          error: function () {
+            alert("Failed to delete exam.");
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

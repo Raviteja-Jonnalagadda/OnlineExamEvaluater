@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Confirm Exam</title>
+	<link rel="icon" href="../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			padding: 20px;
+		}
+
+		h2 {
+			color: #333;
+		}
+
+		.readonly-box {
+			background: #f9f9f9;
+			padding: 10px;
+			border: 1px solid #ccc;
+			margin-bottom: 20px;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 15px;
+		}
+
+		table,
+		th,
+		td {
+			border: 1px solid #999;
+		}
+
+		th,
+		td {
+			padding: 8px;
+			text-align: center;
+		}
+
+		.correct {
+			background-color: #c8e6c9;
+			font-weight: bold;
+		}
+
+		button {
+			padding: 10px 15px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h2>Confirm Exam Details</h2>
+	<div class="readonly-box" id="examInfo"></div>
+
+	<h3>Questions & Options</h3>
+	<table id="questionTable">
+		<thead>
+			<tr>
+				<th>Question ID</th>
+				<th>Question</th>
+				<th>Options</th>
+				<th>Correct Option</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+
+	<br>
+	<button id="submitExamBtn">Okay, Submit Exam</button>
+
+	<script src="../js/jquery-3.7.1.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			const examData = JSON.parse(localStorage.getItem("finalExamData"));
+
+			if (!examData || !examData.questions || !Array.isArray(examData.questions)) {
+				alert("No valid exam data found!");
+				return;
+			}
+
+			// Display exam details
+			const examInfoHtml = `
+        <p><strong>Exam ID:</strong> ${examData.examId}</p>
+        <p><strong>Exam Name:</strong> ${examData.examName}</p>
+        <p><strong>No of Questions:</strong> ${examData.noOfQuestions}</p>
+        <p><strong>Duration (min):</strong> ${examData.duration}</p>
+        <p><strong>Total Marks:</strong> ${examData.totalMarks}</p>
+        <p><strong>Pass Marks:</strong> ${examData.passMarks}</p>
+      `;
+			$('#examInfo').html(examInfoHtml);
+
+			// Display questions
+			examData.questions.forEach(q => {
+				const optionArray = Array.isArray(q.options) ? q.options : q.options.split(',').map(opt => opt.trim());
+				const allOpts = optionArray.map(opt =>
+					`<span class="${opt === q.correctOption ? 'correct' : ''}">${opt}</span>`
+				).join('<br>');
+
+				$('#questionTable tbody').append(`
+          <tr>
+            <td>${q.questionId}</td>
+            <td>${q.questionText}</td>
+            <td>${allOpts}</td>
+            <td class="correct">${q.correctOption}</td>
+          </tr>
+        `);
+			});
+
+			// Handle submit button click
+			$('#submitExamBtn').click(function () {
+				const finalData = {
+					examId: parseInt(examData.examId),
+					examName: examData.examName,
+					noOfQuestions: examData.questions.length,
+					duration: parseInt(examData.duration),
+					totalMarks: parseInt(examData.totalMarks),
+					passMarks: parseInt(examData.passMarks),
+					makerId: parseInt(examData.makerId),
+					questions: examData.questions.map(q => ({
+						questionId: q.questionId,
+						questionText: q.questionText,
+						options: Array.isArray(q.options) ? q.options : q.options.split(',').map(opt => opt.trim()),
+						answer: q.correctOption,
+						marks: q.marks
+					}))
+				};
+
+				$.ajax({
+					type: "POST",
+					url: "/OnlineExamEvaluater/submitExam",
+					data: JSON.stringify(finalData),
+					contentType: "application/json",
+					success: function (res) {
+						if (res.status === "success") {
+							alert("Your exam Is On Live Now");
+							//localStorage.removeItem("finalExamData");
+							window.location.href = "exam-success_live.html";
+						} else {
+							alert("Error: " + res.message);
+						}
+					},
+					error: function (err) {
+						console.error("Error submitting exam", err);
+						let errorMsg = "Submission failed!";
+						if (err.responseJSON && err.responseJSON.message) {
+							errorMsg = err.responseJSON.message;
+						} 
+						alert(errorMsg);
+					}
+				});
+			});
+		});
+	</script>
+</body>
+
+</html>

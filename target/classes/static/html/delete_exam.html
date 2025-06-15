@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Select Exam to Delete</title>
+  <link rel="icon" href="../images/Online_Exam_Icon.jpg" style="width:500px;" type="image/x-icon">
+  <link rel="stylesheet" href="../css/edit_exam.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h2>Select an Exam to Delete</h2>
+    <table id="examTable">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Exam ID</th>
+          <th>Exam Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be populated by AJAX -->
+      </tbody>
+    </table>
+    <button id="loadExamBtn">Next</button>
+  </div>
+
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Fetch all exams
+      $.ajax({
+        url: "/OnlineExamEvaluater/getAllExams",
+        method: "GET",
+        success: function (res) {
+          if (res.length === 0) {
+            $('#examTable tbody').append(`<tr><td colspan="3">No exams found.</td></tr>`);
+            return;
+          }
+
+          res.forEach(exam => {
+            $('#examTable tbody').append(`
+              <tr>
+                <td class="radio-cell"><input type="radio" name="examRadio" value="${exam.examId}"></td>
+                <td>${exam.examId}</td>
+                <td>${exam.examName}</td>
+              </tr>
+            `);
+          });
+        },
+        error: function () {
+          alert("Failed to load exams. Please try again later.");
+        }
+      });
+
+      // Proceed to confirmation page
+      $('#loadExamBtn').click(function () {
+        const selectedExamId = $('input[name="examRadio"]:checked').val();
+        if (!selectedExamId) {
+          alert("Please select an exam to delete.");
+          return;
+        }
+
+        localStorage.setItem("selectedExamId", selectedExamId);
+        window.location.href = `deleteexam_conform.html?examId=${selectedExamId}`;
+      });
+    });
+  </script>
+</body>
+</html>
