@@ -1,6 +1,6 @@
 #  Online Exam Evaluator
 
-A full-stack web application that allows administrators to create and manage online exams, and students to attempt them with real-time evaluation — built using **Spring Boot**, **Core Java**, **JSP**, **jQuery**, and **Oracle SQL**.
+A full-stack web application that allows administrators to create and manage online exams, and students to attempt them with real-time evaluation — built using **Spring Boot**, **Core Java**, **AWT**, **JSP**, **jQuery**, and **Oracle SQL**.
 
 ### 👨‍🏫 Admin Panel
 - Create unique exams with dynamic IDs
